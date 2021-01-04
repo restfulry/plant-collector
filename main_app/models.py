@@ -1,16 +1,12 @@
 from django.db import models
 
 
-class Plant:  # Note that parens are optional if not inheriting from another class
-    def __init__(self, name, breed, description, age):
-        self.name = name
-        self.breed = breed
-        self.description = description
-        self.age = age
+class Plant(models.Model):
+    name = models.CharField(max_length=100)
+    varietal = models.CharField(max_length=100)
+    description = models.TextField(max_length=250)
+    age = models.IntegerField()
+    light_requirement = models.IntegerField()
 
-
-plants = [
-    Plant('Lolo', 'tabby', 'foul little demon', 3),
-    Plant('Sachi', 'tortoise shell', 'diluted tortoise shell', 0),
-    Plant('Raven', 'black tripod', '3 legged cat', 4)
-]
+    def __str__(self):
+        return self.name
