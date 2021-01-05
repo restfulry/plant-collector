@@ -57,7 +57,7 @@
   <div class="col s6">
     <h3>Fertilizers for {{ plant.name }}</h3>
     {% if plant.fertilizers.count %}
-      {% for toy in plant.fertilizers.all %}
+      {% for fertilizer in plant.fertilizers.all %}
         <div class="card">
           <div class="card-content">
             <span class="card-title">
@@ -71,6 +71,28 @@
     {% endif %}
   </div>
   <!-- Available fertilizers will come after this line -->
+  <div class="col s6">
+    <h3>Available Fertilizers</h3>
+    {% if fertilizers.count %}
+      {% for fertilizer in fertilizers.all %}
+        <div class="card">
+          <div class="card-content">
+            <span class="card-title">
+              {{ fertilizer.quantity }} of {{ fertilizer.fertilizer }}
+            </span>
+          </div>
+          <div class="card-action">
+            <form action="" method="post">
+              {% csrf_token %}
+              <button type="submit" class="btn">Add</button>
+            </form>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <h5>{{plant.name}} Already Has All fertilizers Available</h5>
+    {% endif %}
+  </div>
 </div>
 
 <script>
