@@ -27,8 +27,8 @@ class Plant(models.Model):
         date_last_watered = self.watering_set.latest('date').date
         today = date.today()
         days_since_watered = (today - (date_last_watered)).days
-        print(f"{days_since_watered}")
-        return days_since_watered.days < water_requirement
+        days_to_next_water = self.water_requirement - days_since_watered
+        return days_to_next_water
 
 
 class Watering(models.Model):
