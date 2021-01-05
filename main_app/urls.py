@@ -13,6 +13,6 @@ urlpatterns = [
          views.PlantDelete.as_view(), name='plants_delete'),
     path('plants/<int:plant_id>/add_watering/',
          views.add_watering, name='add_watering'),
-    path('plants/<int:plant_id>/add_watering/',
-         views.add_watering, name='add_watering'),
+    path('plants/<int:plant_id>/assoc_fertilizer/<int:fertilizer_id>/',
+         views.assoc_fertilizer, name='assoc_fertilizer'),
 ]
