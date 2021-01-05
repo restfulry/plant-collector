@@ -15,4 +15,7 @@ urlpatterns = [
          views.add_watering, name='add_watering'),
     path('plants/<int:plant_id>/assoc_fertilizer/<int:fertilizer_id>/',
          views.assoc_fertilizer, name='assoc_fertilizer'),
+    path('plants/<int:plant_id>/unassoc_fertilizer/<int:fertilizer_id>/',
+         views.unassoc_fertilizer, name='unassoc_fertilizer')
+
 ]

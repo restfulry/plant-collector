@@ -64,13 +64,19 @@
               {{ fertilizer.quantity }} of {{ fertilizer.fertilizer }}
             </span>
           </div>
+          <div class="card-action">
+            <form action="{% url 'unassoc_fertilizer' plant.id fertilizer.id %}" method="POST">
+              {% csrf_token %}
+              <button type="submit" class="btn">Remove</button>
+            </form>
+          </div>
         </div>
       {% endfor %}
     {% else %}
       <h5>No supplemental nutrients needed :)</h5>
     {% endif %}
   </div>
-  <!-- Available fertilizers will come after this line -->
+  <!-- Available Fertilizers -->
   <div class="col s6">
     <h3>Available Fertilizers</h3>
     {% if fertilizers.count %}
