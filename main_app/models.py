@@ -9,6 +9,21 @@ FERTILIZERS = (
 )
 
 
+class Fertilizer(models.Model):
+    fertilizer = models.CharField(
+        max_length=1,
+        choices=FERTILIZERS,
+        default=FERTILIZERS[0][0]
+    )
+    quantity = models.IntegerField()
+
+    def __str__(self):
+        return self.fertilizer
+
+    def get_absolute_url(self):
+        return reverse('fertilizers_detail', kwargs={'pk': self.id})
+
+
 class Plant(models.Model):
     name = models.CharField(max_length=100)
     varietal = models.CharField(max_length=100)
@@ -16,6 +31,7 @@ class Plant(models.Model):
     age = models.IntegerField()
     light_requirement = models.IntegerField()
     water_requirement = models.PositiveIntegerField()
+    fertilizers = models.ManyToManyField(Fertilizer)
 
     def __str__(self):
         return self.name
