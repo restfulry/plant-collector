@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.contrib.auth.models import User
 from datetime import date, timedelta
 
 FERTILIZERS = (
@@ -32,6 +33,7 @@ class Plant(models.Model):
     light_requirement = models.IntegerField()
     water_requirement = models.PositiveIntegerField()
     fertilizers = models.ManyToManyField(Fertilizer)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
