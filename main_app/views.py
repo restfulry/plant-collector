@@ -1,11 +1,15 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.contrib.auth import login
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Plant, Fertilizer
 from .forms import WateringForm
 
 
-class PlantCreate(CreateView):
+class PlantCreate(LoginRequiredMixin, CreateView):
     model = Plant
     fields = '__all__'
 
@@ -14,29 +18,49 @@ class PlantCreate(CreateView):
         return super().form_valid(form)
 
 
-class PlantUpdate(UpdateView):
+class PlantUpdate(LoginRequiredMixin, UpdateView):
     model = Plant
     fields = ['varietal', 'description', 'age']
 
 
-class PlantDelete(DeleteView):
+class PlantDelete(LoginRequiredMixin, DeleteView):
     model = Plant
     success_url = '/plants/'
 
 
+@login_required
+def signup(request):
+    error_message = ''
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('index')
+        else:
+            error_message = 'Invalid sign up. Try again.'
+    form = UserCreationForm()
+    context = {'form': form, 'error_message': error_message}
+    return render(request, 'registration/signup.html', context)
+
+
+@login_required
 def home(request):
     return render(request, 'home.html')
 
 
+@login_required
 def about(request):
     return render(request, 'about.html')
 
 
+@login_required
 def plants_index(request):
-    plants = Plant.objects.all()
+    plants = Plant.objects.filter(user=request.user)
     return render(request, 'plants/index.html', {'plants': plants})
 
 
+@login_required
 def plants_detail(request, plant_id):
     plant = Plant.objects.get(id=plant_id)
     fertilizers_plant_doesnt_have = Fertilizer.objects.exclude(
@@ -49,6 +73,7 @@ def plants_detail(request, plant_id):
     })
 
 
+@login_required
 def add_watering(request, plant_id):
     form = WateringForm(request.POST)
     if form.is_valid():
@@ -58,11 +83,13 @@ def add_watering(request, plant_id):
     return redirect('detail', plant_id=plant_id)
 
 
+@login_required
 def assoc_fertilizer(request, plant_id, fertilizer_id):
     Plant.objects.get(id=plant_id).fertilizers.add(fertilizer_id)
     return redirect('detail', plant_id=plant_id)
 
 
+@login_required
 def unassoc_fertilizer(request, plant_id, fertilizer_id):
     Plant.objects.get(id=plant_id).fertilizers.remove(fertilizer_id)
     return redirect('detail', plant_id=plant_id)
