@@ -17,5 +17,4 @@ urlpatterns = [
          views.assoc_fertilizer, name='assoc_fertilizer'),
     path('plants/<int:plant_id>/unassoc_fertilizer/<int:fertilizer_id>/',
          views.unassoc_fertilizer, name='unassoc_fertilizer')
-
 ]
