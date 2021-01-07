@@ -10,6 +10,11 @@ FERTILIZERS = (
 )
 
 
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    email = models.EmailField()
+
+
 class Fertilizer(models.Model):
     fertilizer = models.CharField(
         max_length=1,
